@@ -1,6 +1,6 @@
-import Footer from './modules/Footer/Footer';
-import Header from './modules/Header/Header';
-import Card from './modules/Card/Card';
+import Footer from './components/Footer/Footer';
+import Header from './components/Header/Header';
+import Card from './components/Card/Card';
 
 const wrapper = {
   display: 'flex',

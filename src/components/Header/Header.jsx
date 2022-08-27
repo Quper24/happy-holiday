@@ -1,4 +1,3 @@
-import Button from '../Button/Button';
 import Choices from '../Choices/Choices';
 import Container from '../Container/Container';
 import style from './Header.module.css';
@@ -8,9 +7,9 @@ const Header = () => (
     <Container>
       <div className={style.wrapper}>
         <div className={style.buttons}>
-          <Button text={'Поменять поздравление'} />
+          <button className={style.button}>Поменять поздравление</button>
 
-          <Button text={'Поменять фон'} />
+          <button className={style.button}>Поменять фон</button>
         </div>
 
         <Choices />
