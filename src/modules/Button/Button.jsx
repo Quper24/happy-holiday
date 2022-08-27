@@ -1,5 +1,7 @@
+import style from './Button.module.css';
+
 const Button = (props) => (
-  <button className='header__button-change'>{props.text}</button>
+  <button className={style.button}>{props.text}</button>
 );
 
 export default Button;
