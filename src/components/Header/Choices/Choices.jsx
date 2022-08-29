@@ -1,18 +1,39 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { holidaysContext } from '../../../context/holidaysContext';
 import style from './Choices.module.css';
+import { URL_API } from '../../../const/const';
 
-const holidays = {
-    newyear: 'Новый год',
-    birthdayWomen: 'День рождения  Ж',
-    birthdayMen: 'День рождения  М',
-    womenday: '8 марта',
-    knowledgeday: 'День знаний',
-};
+// const holidays = {
+//     newyear: 'Новый год',
+//     birthdayWomen: 'День рождения  Ж',
+//     birthdayMen: 'День рождения  М',
+//     womenday: '8 марта',
+//     knowledgeday: 'День знаний',
+// };
 
 const Choices = () => {
   const [isOpenChoices, setIsOpenChoices] = useState(false);
-  const {holiday, setHoliday} = useContext(holidaysContext)
+  const {holiday, setHoliday} = useContext(holidaysContext);
+  const [holidays, setHolidays] = useState({});
+
+  useEffect(() => {
+
+    fetch(URL_API)
+      .then((response) => {
+        if (response.status === 401) {
+          throw new Error(response.status);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setHolidays(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [])
+
 
   const toggleChoices = () => {
     setIsOpenChoices(!isOpenChoices)

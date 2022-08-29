@@ -3,10 +3,10 @@ import { createContext, useState } from 'react';
 export const holidaysContext = createContext({});
 
 export const HolidaysContextProvider = ({ children }) => {
-  const [holidays, setHolidays] = useState('');
+  const [holiday, setHoliday] = useState('Выбрать праздник');
 
   return (
-    <holidaysContext.Provider value={{holidays, setHolidays}}>
+    <holidaysContext.Provider value={{holiday, setHoliday}}>
       {children}
     </holidaysContext.Provider>
   )
