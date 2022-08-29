@@ -6,6 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 30px;
 }
 
 .contacts {
@@ -20,19 +21,16 @@
 }
 
 .link {
-  color: #00c78b;
-  transition: opacity 0.3s ease-in;
+  color: #00C78B;
+  transition: color .3s ease-in-out;
 }
 
 .link:hover {
-  opacity: 0.5;
+  color: #00fc0d;
 }
-
 
 @media (max-width: 480px) {
   .wrapper {
     flex-direction: column-reverse;
-    gap: 30px;
   }
-
 }

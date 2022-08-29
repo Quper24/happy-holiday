@@ -1,25 +1,23 @@
-import style from './Felicitation.module.css';
+import { createContext, useState } from 'react';
 
-const Felicitation = () =>(
-  <p className={style.felicitation}>
+export const textContext = createContext({});
+
+export const TextContextProvider = ({ children }) => {
+  const [text, setText] = useState(`
     Поздравляю с днем рожденья!
-    <br />
     Пусть будет жизнь полна веселья,
-    <br />
     Не будет грусти и хлопот,
-    <br />
     А только счастье круглый год!
-    <br />
-    <br />
-    Желаю творческих успехов,
-    <br />
-    Прекрасных дней, улыбок, смеха.
-    <br />
-    Любви, душевного тепла,
-    <br />
-    Как сказка, чтобы жизнь была!
-    <br />
-  </p>
-);
 
-export default Felicitation;
+    Желаю творческих успехов,
+    Прекрасных дней, улыбок, смеха.
+    Любви, душевного тепла,
+    Как сказка, чтобы жизнь была!
+  `);
+
+  return (
+    <textContext.Provider value={{text, setText}}>
+      {children}
+    </textContext.Provider>
+  )
+}
