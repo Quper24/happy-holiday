@@ -1,70 +1,58 @@
-import { useContext, useEffect, useState } from 'react';
-import { holidaysContext } from '../../../context/holidaysContext';
+import { useState, useEffect } from 'react';
 import style from './Choices.module.css';
-import { URL_API } from '../../../const/const';
-
-// const holidays = {
-//     newyear: 'Новый год',
-//     birthdayWomen: 'День рождения  Ж',
-//     birthdayMen: 'День рождения  М',
-//     womenday: '8 марта',
-//     knowledgeday: 'День знаний',
-// };
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchHolidays } from '../../../store/holidaysSlice';
+import { fetchText } from '../../../store/textSlice';
+import { fetchImage } from '../../../store/imageSlice';
+import { NavLink, useParams } from 'react-router-dom';
 
 const Choices = () => {
   const [isOpenChoices, setIsOpenChoices] = useState(false);
-  const {holiday, setHoliday} = useContext(holidaysContext);
-  const [holidays, setHolidays] = useState({});
-
-  useEffect(() => {
-
-    fetch(URL_API)
-      .then((response) => {
-        if (response.status === 401) {
-          throw new Error(response.status);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setHolidays(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [])
-
+  const { holidays, loading } = useSelector(state => state.holidays);
+  const dispatch = useDispatch();
+  const { holiday } =  useParams();
 
   const toggleChoices = () => {
-    setIsOpenChoices(!isOpenChoices)
+    if (loading !== 'success') return;
+    setIsOpenChoices(!isOpenChoices);
   };
 
-  const changeHoliday = title => {
-    setHoliday(title);
-    toggleChoices();
-  }
+  useEffect(() => {
+    dispatch(fetchHolidays());
+    if (holiday) {
+      dispatch(fetchText(holiday));
+      dispatch(fetchImage(holiday));
+    }
+  }, [dispatch, holiday])
+  
 
   return (
     <div className={style.wrapper}>
-      <button className={style.button} onClick={toggleChoices}>{holiday}</button>
+      <button className={style.button} onClick={toggleChoices}>
+        {loading !== 'success' ? 
+          'Загрузка...' :
+          holidays[holiday] || 'Выбрать праздник'}
+      </button>
       {isOpenChoices && (
-          <ul className={style.list}>
-            {Object.entries(holidays).map(item => (
-              <li 
-                className={style.item} 
-                key={item[0]}
-                onClick={() => {
-                  changeHoliday(item[1])
-                }}
-              >
-                {item[1]}
-              </li>
-            ))}
-          </ul>
-        )
-      }
+        <ul className={style.list}>
+          {Object.entries(holidays).map((item) => (
+            <li
+              className={style.item}
+              key={item[0]}
+              onClick={() => {
+                toggleChoices();
+              }}
+            >
+              <NavLink 
+                to={`card/${item[0]}`} 
+                className={({isActive}) => (isActive ? style.linkActive : '')}
+              >{item[1]}</NavLink>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
-  )
+  );
 };
 
 export default Choices;
